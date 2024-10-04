@@ -1,0 +1,22 @@
+### Get all tasks
+GET http://localhost:3000/tasks
+
+### Get task by ID
+GET http://localhost:3000/task/123456789
+
+### Create new task
+POST http://localhost:3000/task
+Content-Type: application/json
+{
+  "description": "Write and submit the project proposal for the new client"
+}
+
+### Update task by ID
+PATCH http://localhost:3000/task/123456789
+Content-Type: application/json
+{
+  "completed": true,
+}
+
+### Delete task by ID
+DELETE http://localhost:3000/task/123456789
