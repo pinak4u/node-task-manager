@@ -6,7 +6,7 @@ const auth = require("../middleware/auth.js");
 
 router.get("/users", auth, async (req, res) => {
     let users = [];
-    if (req.user.email == "admin@gmail.com") {
+    if (req.user.email === "admin@gmail.com") {
         users = await User.find({});
     } else {
         users = await User.find({_id: req.user._id});
@@ -17,7 +17,7 @@ router.get("/users", auth, async (req, res) => {
 router.get("/user/:id", auth, async (req, res) => {
     const id = req.params.id;
     let user = null;
-    if (req.user.email == "admin@gmail.com") {
+    if (req.user.email === "admin@gmail.com") {
         user = await User.findById(id);
         if (!user) {
             return res.status(404).send(`Can not find User with id : ${id}`);
@@ -48,7 +48,7 @@ router.post("/user", async (req, res) => {
 router.patch("/user/:id", auth, async (req, res) => {
     const id = req.params.id;
     const payload = req.body;
-    if (req.user.email == "admin@gmail.com") {
+    if (req.user.email === "admin@gmail.com") {
         const user = await User.findById(id);
         if (!user) {
             return res.status(404).send(`Can not find User with id : ${id}`);
@@ -71,7 +71,7 @@ router.patch("/user/:id", auth, async (req, res) => {
 
 router.delete("/user/:id", auth, async (req, res) => {
     const id = req.params.id;
-    if (req.user.email == "admin@gmail.com") {
+    if (req.user.email === "admin@gmail.com") {
         const user = await User.findById(id);
         if (!user) {
             return res.status(404).send(`Can not find User with id : ${id}`);
