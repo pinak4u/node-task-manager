@@ -1,12 +1,8 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const User = require("../db/schema/user.js");
-const auth = require("../middleware/auth");
-
-const router = express.Router();
+const User = require("../db/schema/User");
+const jwt = require("jsonwebtoken");
 const authSecret = 'AuthSecret';
 
-router.post('/login',async (req,res)=>{
+const login = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const user = await User.findUserByCredentials(email,password);
@@ -18,11 +14,14 @@ router.post('/login',async (req,res)=>{
     const token = jwt.sign(payload,authSecret);
     await user.addToken(token);
     return res.send({user});
-})
+};
 
-router.post('/logout',auth, async (req,res)=>{
+const logout = async (req, res) => {
     await req.user.removeToken(req.token);
     return res.send('User logged out successfully');
-})
+};
 
-module.exports = router;
+module.exports = {
+    login,
+    logout
+};

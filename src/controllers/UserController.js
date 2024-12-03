@@ -1,10 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const User = require("../db/schema/user.js");
+const {User} = require("../db/schema")
 const bcrypt = require("bcryptjs");
-const auth = require("../middleware/auth.js");
 
-router.get("/users", auth, async (req, res) => {
+const getAllUsers = async (req, res) => {
     let users = [];
     if (req.user.email === "admin@gmail.com") {
         users = await User.find({});
@@ -12,9 +9,8 @@ router.get("/users", auth, async (req, res) => {
         users = await User.find({_id: req.user._id});
     }
     return res.status(200).send(users);
-});
-
-router.get("/user/:id", auth, async (req, res) => {
+}
+const getUser = async (req, res) => {
     const id = req.params.id;
     let user = null;
     if (req.user.email === "admin@gmail.com") {
@@ -33,9 +29,9 @@ router.get("/user/:id", auth, async (req, res) => {
     }
 
     return res.status(200).send(user);
-});
+}
 
-router.post("/user", async (req, res) => {
+const createUser = async (req, res) => {
     const payload = req.body;
     payload.password = await bcrypt.hash(payload.password, 8);
     const user = await User.create(payload);
@@ -43,9 +39,9 @@ router.post("/user", async (req, res) => {
         return res.status(500).send(`Something went wrong creating User`);
     }
     return res.status(201).send(user);
-});
+};
 
-router.patch("/user/:id", auth, async (req, res) => {
+const updateUser = async (req, res) => {
     const id = req.params.id;
     const payload = req.body;
     if (req.user.email === "admin@gmail.com") {
@@ -67,9 +63,9 @@ router.patch("/user/:id", auth, async (req, res) => {
     }
     const updatedUser = await User.findById(id);
     return res.status(200).send(updatedUser);
-});
+};
 
-router.delete("/user/:id", auth, async (req, res) => {
+const deleteUser = async (req, res) => {
     const id = req.params.id;
     if (req.user.email === "admin@gmail.com") {
         const user = await User.findById(id);
@@ -92,6 +88,11 @@ router.delete("/user/:id", auth, async (req, res) => {
             .send(`Something went wrong deleting User with id : ${id}`);
     }
     return res.status(200).send(`User deleted with id : ${id}`);
-});
-
-module.exports = router;
+}
+module.exports = {
+    getAllUsers,
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser,
+};
