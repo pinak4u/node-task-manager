@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema({
     },
     required: true,
   },
+  amount: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   tasks: [
     {
       type: mongoose.Schema.Types.ObjectId,

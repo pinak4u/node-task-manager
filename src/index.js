@@ -1,7 +1,7 @@
 const express = require('express');
 require ('./db/mongoose.js');
 
-const {AuthRouter, TaskRouter, UserRouter } = require('./router');
+const {AuthRouter, TaskRouter, UserRouter, PlayGroundRouter } = require('./router');
 
 const port = process.env.PORT ||3000;
 const app = new express();
@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(AuthRouter);
 app.use(UserRouter);
 app.use(TaskRouter);
+app.use(PlayGroundRouter);
 
 
 //start web server
